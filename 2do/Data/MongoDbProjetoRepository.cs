@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using _2do.Data.Interfaces;
 using _2do.Models;
 
 namespace _2do.Data
 {
-    public class MongoDbProjetoRepository : IProjetoRepository 
+    public class MongoDbProjetoRepository : IProjetoRepository
     {
+        private readonly MongoCollection<Projeto> projetos = MongoDbHelper.GetDatabase().GetCollection<Projeto>("Projetos"); 
+
         public void Insert(Projeto entity)
         {
-            throw new NotImplementedException();
+            projetos.Insert(entity);
         }
 
         public void Edit(Projeto entity)
@@ -20,9 +24,10 @@ namespace _2do.Data
             throw new NotImplementedException();
         }
 
-        public void Delete(Projeto entity)
+        public void Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var query = Query<Projeto>.EQ(e => e.Id, id);
+            projetos.Remove(query);
         }
 
         public IQueryable<Projeto> SearchFor(Expression<Func<Projeto, bool>> predicate)
@@ -35,9 +40,10 @@ namespace _2do.Data
             throw new NotImplementedException();
         }
 
-        public Projeto GetById(int id)
+        public Projeto GetById(Guid id)
         {
-            throw new NotImplementedException();
+            var query = Query<Projeto>.EQ(e => e.Id, id);
+            return projetos.FindOne(query);
         }
     }
 }

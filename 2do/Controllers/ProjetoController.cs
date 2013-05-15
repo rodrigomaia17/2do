@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using MongoDB.Bson;
 using _2do.Data;
 using _2do.Data.Interfaces;
@@ -27,7 +28,7 @@ namespace _2do.Controllers
         //
         // GET: /Projeto/Details/5
 
-        public ActionResult Details(int id)
+        public ActionResult Details(Guid id)
         {
             var projeto = _repository.GetById(id);
             return View(projeto);
@@ -62,7 +63,7 @@ namespace _2do.Controllers
         //
         // GET: /Projeto/Edit/5
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(Guid id)
         {
             var projeto = _repository.GetById(id);
             return View("Create",projeto);

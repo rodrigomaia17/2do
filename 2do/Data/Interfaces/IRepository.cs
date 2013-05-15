@@ -5,12 +5,12 @@ using MongoDB.Bson;
 
 namespace _2do.Data.Interfaces
 {
-    public interface IRepository<T>
+    public interface IRepository<TId,TEntity>
     {
-        void Insert(T entity);
-        void Edit(T entity);
-        void Delete(T entity);
-        IQueryable<T> GetAll();
-        T GetById(int id);
+        void Insert(TEntity entity);
+        void Edit(TEntity entity);
+        void Delete(TId id);
+        IQueryable<TEntity> GetAll();
+        TEntity GetById(TId id);
     }
 }

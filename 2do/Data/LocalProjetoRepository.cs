@@ -11,16 +11,16 @@ namespace _2do.Data
 {
     public class LocalProjetoRepository : IProjetoRepository 
     {
-        private readonly Dictionary<int,Projeto> _projetos = new Dictionary<int, Projeto>();  
+        private readonly Dictionary<Guid,Projeto> _projetos = new Dictionary<Guid, Projeto>();  
 
         public void Insert(Projeto entity)
         {
             _projetos.Add(entity.Id,entity);
         }
 
-        public void Delete(Projeto entity)
+        public void Delete(Guid id)
         {
-            _projetos.Remove(entity.Id);
+            _projetos.Remove(id);
         }
         public void Edit(Projeto entity)
         {
@@ -32,7 +32,7 @@ namespace _2do.Data
             return _projetos.Values.AsQueryable();
         }
 
-        public Projeto GetById(int id)
+        public Projeto GetById(Guid id)
         {
             return _projetos[id];
         }
