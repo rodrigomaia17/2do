@@ -156,6 +156,7 @@
     <Compile Include="Controllers\ProjetoController.cs" />
     <Compile Include="Data\Interfaces\IProjetoRepository.cs" />
     <Compile Include="Data\Interfaces\IRepository.cs" />
+    <Compile Include="Data\LocalProjetoRepository.cs" />
     <Compile Include="Data\MongoDbProjetoRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

@@ -5,8 +5,13 @@
     @Html.ValidationSummary(true)
     <fieldset class="form-horizontal">
         <legend>@Model.GetLabel() <small>Details</small></legend>
+        @{ string[] listaIgnorar = {"Colaborador", "CreatedAt", "UpdatedAt"}; }
         @foreach (var property in Model.VisibleProperties())
         {
+            if (listaIgnorar.Contains(property.Name))
+            {
+                continue;
+            }
             using(Html.ControlGroupFor(property.Name)){
                 @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label" })
                  <div class="controls">

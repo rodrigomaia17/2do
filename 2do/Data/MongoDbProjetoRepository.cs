@@ -15,6 +15,11 @@ namespace _2do.Data
             throw new NotImplementedException();
         }
 
+        public void Edit(Projeto entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(Projeto entity)
         {
             throw new NotImplementedException();

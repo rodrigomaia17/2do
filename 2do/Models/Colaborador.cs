@@ -8,7 +8,7 @@ namespace _2do.Models
 {
     public class Colaborador : AbstractModel
     {
-        public ObjectId Id { get; set; }
+        public int Id { get; set; }
         public string Nome { get; set; }
         public string Matricula { get; set; }
         public string Cargo { get; set; }

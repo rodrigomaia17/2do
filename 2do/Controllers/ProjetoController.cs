@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
+using MongoDB.Bson;
 using _2do.Data;
 using _2do.Data.Interfaces;
+using _2do.Models;
 
 namespace _2do.Controllers
 {
@@ -18,7 +20,8 @@ namespace _2do.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var projetos = _repository.GetAll();
+            return View(projetos);
         }
 
         //
@@ -26,7 +29,8 @@ namespace _2do.Controllers
 
         public ActionResult Details(int id)
         {
-            return View();
+            var projeto = _repository.GetById(id);
+            return View(projeto);
         }
 
         //
@@ -34,18 +38,18 @@ namespace _2do.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View(new Projeto());
         }
 
         //
         // POST: /Projeto/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Projeto projeto)
         {
             try
             {
-                // TODO: Add insert logic here
+                _repository.Insert(projeto);
 
                 return RedirectToAction("Index");
             }
@@ -60,14 +64,15 @@ namespace _2do.Controllers
 
         public ActionResult Edit(int id)
         {
-            return View();
+            var projeto = _repository.GetById(id);
+            return View("Create",projeto);
         }
 
         //
         // POST: /Projeto/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Projeto projeto)
         {
             try
             {
