@@ -24,4 +24,18 @@ namespace _2do.Tests
 
         }
     }
+
+    public static class TarefaUtil
+    {
+        public static IList<Tarefa>  ListaNovasTarefas()
+        {
+             var tarefas = new List<Tarefa>
+                {
+                    new Tarefa {Descricao = "Tarefa Teste1"},
+                    new Tarefa() {Descricao = "Tarefa Teste2"}
+                };
+
+            return tarefas;
+        }
+    }
 }

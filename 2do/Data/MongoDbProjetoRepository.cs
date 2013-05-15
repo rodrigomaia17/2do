@@ -12,38 +12,39 @@ namespace _2do.Data
 {
     public class MongoDbProjetoRepository : IProjetoRepository
     {
-        private readonly MongoCollection<Projeto> projetos = MongoDbHelper.GetDatabase().GetCollection<Projeto>("Projetos"); 
+        private readonly MongoCollection<Projeto> _projetos = MongoDbHelper.GetDatabase().GetCollection<Projeto>("Projetos"); 
 
         public void Insert(Projeto entity)
         {
-            projetos.Insert(entity);
+            _projetos.Insert(entity);
         }
 
         public void Edit(Projeto entity)
         {
-            throw new NotImplementedException();
+            _projetos.Save(entity);
         }
 
         public void Delete(Guid id)
         {
             var query = Query<Projeto>.EQ(e => e.Id, id);
-            projetos.Remove(query);
+            _projetos.Remove(query);
         }
 
         public IQueryable<Projeto> SearchFor(Expression<Func<Projeto, bool>> predicate)
         {
-            throw new NotImplementedException();
+            var query = Query<Projeto>.EQ(predicate,true);
+            return _projetos.Find(query).AsQueryable();
         }
 
         public IQueryable<Projeto> GetAll()
         {
-            throw new NotImplementedException();
+            return _projetos.FindAll().AsQueryable();
         }
 
         public Projeto GetById(Guid id)
         {
             var query = Query<Projeto>.EQ(e => e.Id, id);
-            return projetos.FindOne(query);
+            return _projetos.FindOne(query);
         }
     }
 }
