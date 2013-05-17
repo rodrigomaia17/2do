@@ -48,11 +48,11 @@ namespace _2do.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
                 
-#if DEBUG 
+//#if DEBUG 
                 kernel.Bind<IProjetoRepository>().To<LocalProjetoRepository>().InSingletonScope();
-#else 
-                kernel.Bind<IProjetoRepository>().To<MongoDbProjetoRepository>();
-#endif
+//#else 
+//                kernel.Bind<IProjetoRepository>().To<MongoDbProjetoRepository>();
+//#endif
 
 
                 
