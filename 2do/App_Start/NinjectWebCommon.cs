@@ -69,11 +69,16 @@ namespace _2do.App_Start
         private static void RegisterServices(IKernel kernel)
         {
 
+             
 #if DEBUG
-            kernel.Bind<IRepositoryFactory>().To<LocalRepositoryFactory>().InSingletonScope();
-#else 
-            kernel.Bind<IRepositoryFactory>().To<MongoRepositoryFactory>().InSingletonScope();
+            IRepositoryFactory factory = new LocalRepositoryFactory();
+#else
+            IRepositoryFactory factory = new MongoRepositoryFactory();
 #endif
+
+            kernel.Bind<IColaboradorRepository>().ToConstant(factory.getColaboradorRepository()).InSingletonScope();
+            kernel.Bind<IProjetoRepository>().ToConstant(factory.getProjetoRepository()).InSingletonScope();
+
 
         }        
     }
