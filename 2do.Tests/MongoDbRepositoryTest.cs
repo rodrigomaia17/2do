@@ -4,7 +4,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using _2do.Data;
+using _2do.Data.Factory;
 using _2do.Data.Interfaces;
+using _2do.Data.MongoDb;
 using _2do.Models;
 
 namespace _2do.Tests
@@ -13,45 +15,48 @@ namespace _2do.Tests
     [TestClass]
     public class MongoDbRepositoryTest
     {
-        private static IList<Guid> _listaExclusao;
+        private static IList<Guid> _listaProjetosExclusao;
         private static IProjetoRepository _projetoRepository;
+        private static IColaboradorRepository _colaboradorRepository;
 
         
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-            _listaExclusao = new List<Guid>();
-            _projetoRepository = new MongoDbProjetoRepository();
+            IRepositoryFactory factory = new MongoRepositoryFactory(); // No projeto eh instanciado via Injecao de Dependencia
+            
+            _listaProjetosExclusao = new List<Guid>();
+
+            _projetoRepository = factory.getProjetoRepository();
+            _colaboradorRepository = factory.getColaboradorRepository();
+
         }
 
         [ClassCleanup()]
         public static void ClassCleanup()
         {
-            foreach (var guid in _listaExclusao)
+            foreach (var guid in _listaProjetosExclusao)
             {
                 _projetoRepository.Delete(guid);
             }
         }
         
 
-        [TestMethod]
-        public void ConsigoCriarInstanciaDatabase()
-        {
-            var database = MongoDbHelper.GetDatabase();
-
-            Assert.IsNotNull(database);
-        }
-
-        
+      
 
         [TestMethod]
-        public void ConsigoSalvarERecuperarProjetoComTarefas()
+        public void ConsigoSalvarERecuperarProjetoComTarefasEColaborador()
         {
             var projeto = ProjetoUtil.NovoProjetoComTarefas();
+
+            var colaborador = ColaboradorUtil.NovoColaborador();
+
+            _colaboradorRepository.Insert(colaborador);
 
             _projetoRepository.Insert(projeto);
 
             Assert.IsTrue(projeto.Id != Guid.Empty);
+            _listaProjetosExclusao.Add(projeto.Id);
             Assert.IsTrue(projeto.Tarefas.Any());
 
             var id = projeto.Id;

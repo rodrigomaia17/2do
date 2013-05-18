@@ -1,5 +1,8 @@
 using _2do.Data;
+using _2do.Data.Factory;
 using _2do.Data.Interfaces;
+using _2do.Data.Local;
+using _2do.Data.MongoDb;
 
 [assembly: WebActivator.PreApplicationStartMethod(typeof(_2do.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(_2do.App_Start.NinjectWebCommon), "Stop")]
@@ -48,15 +51,6 @@ namespace _2do.App_Start
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
                 
-#if DEBUG 
-                kernel.Bind<IProjetoRepository>().To<LocalProjetoRepository>().InSingletonScope();
-#else 
-                kernel.Bind<IProjetoRepository>().To<MongoDbProjetoRepository>();
-#endif
-
-
-                
-
 
                 RegisterServices(kernel);
                 return kernel;
@@ -74,6 +68,13 @@ namespace _2do.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+
+#if DEBUG
+            kernel.Bind<IRepositoryFactory>().To<LocalRepositoryFactory>().InSingletonScope();
+#else 
+            kernel.Bind<IRepositoryFactory>().To<MongoRepositoryFactory>().InSingletonScope();
+#endif
+
         }        
     }
 }

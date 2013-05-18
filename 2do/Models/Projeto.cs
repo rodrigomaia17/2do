@@ -5,10 +5,11 @@ using System.Linq;
 using System.Web;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using _2do.Data.Interfaces;
 
 namespace _2do.Models
 {
-    public class Projeto  : AbstractModel
+    public class Projeto  : AbstractModel , IPossuiGuidId
     {
         private DateTime? _dataInicio;
         [BsonElement("Tarefas")]

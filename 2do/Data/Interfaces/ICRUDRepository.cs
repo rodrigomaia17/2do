@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
-using MongoDB.Bson;
 
 namespace _2do.Data.Interfaces
 {
-    public interface IRepository<TId,TEntity>
+    public interface ICrudRepository<TEntity> where TEntity : IPossuiGuidId
     {
         void Insert(TEntity entity);
         void Edit(TEntity entity);
-        void Delete(TId id);
+        void Delete(Guid id);
         IQueryable<TEntity> GetAll();
-        TEntity GetById(TId id);
+        TEntity GetById(Guid id);
     }
 }

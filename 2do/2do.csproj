@@ -159,11 +159,20 @@
     <Compile Include="Controllers\ExampleLayoutsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjetoController.cs" />
+    <Compile Include="Data\Factory\IRepositoryFactory.cs" />
+    <Compile Include="Data\Interfaces\IColaboradorRepository.cs" />
+    <Compile Include="Data\Interfaces\IPossuiGuidId.cs" />
     <Compile Include="Data\Interfaces\IProjetoRepository.cs" />
-    <Compile Include="Data\Interfaces\IRepository.cs" />
-    <Compile Include="Data\LocalProjetoRepository.cs" />
-    <Compile Include="Data\MongoDbHelper.cs" />
-    <Compile Include="Data\MongoDbProjetoRepository.cs" />
+    <Compile Include="Data\Interfaces\ICRUDRepository.cs" />
+    <Compile Include="Data\Local\LocalColaboradorRepository.cs" />
+    <Compile Include="Data\Local\LocalProjetoRepository.cs" />
+    <Compile Include="Data\Local\LocalRepository.cs" />
+    <Compile Include="Data\Local\LocalRepositoryFactory.cs" />
+    <Compile Include="Data\MongoDb\MongoDbColaboradorRepository.cs" />
+    <Compile Include="Data\MongoDb\MongoDbCrudRepository.cs" />
+    <Compile Include="Data\MongoDb\MongoDbHelper.cs" />
+    <Compile Include="Data\MongoDb\MongoDbProjetoRepository.cs" />
+    <Compile Include="Data\MongoDb\MongoRepositoryFactory.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

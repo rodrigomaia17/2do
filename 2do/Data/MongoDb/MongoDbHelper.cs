@@ -1,9 +1,9 @@
-﻿using System.Configuration;
+using System.Configuration;
 using MongoDB.Driver;
 
-namespace _2do.Data
+namespace _2do.Data.MongoDb
 {
-    public static class MongoDbHelper
+    internal static class MongoDbHelper
     {
         private static MongoDatabase _database;
 
