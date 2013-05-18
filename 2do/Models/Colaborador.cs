@@ -10,4 +10,10 @@ namespace _2do.Models
         public string Matricula { get; set; }
         public string Cargo { get; set; }
     }
+
+    public class ColaboradorInfo
+    {
+        public Guid Id { get; set; }
+        public string Nome { get; set; }
+    }
 }

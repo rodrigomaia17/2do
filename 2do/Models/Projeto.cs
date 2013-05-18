@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
-using MongoDB.Bson;
+using FluentValidation;
 using MongoDB.Bson.Serialization.Attributes;
 using _2do.Data.Interfaces;
 
@@ -21,22 +19,20 @@ namespace _2do.Models
         public DateTime DataEntrega { get; set; }
 
         [DataType(DataType.Date)]
-        [Required]
-        [BsonRequired]
         public DateTime? DataInicio
         {
             get { return _dataInicio; }
             set
             {
                 if (value < DateTime.Now)
-                    throw new ArgumentException("Data Inicio nao pode ser menor que data Atual", paramName: "DataInicio");
+                    throw new ArgumentException("Data Inicio nao pode ser menor que data Atual", "DataInicio");
                 _dataInicio = value;
             }
         }
 
         public IEnumerable<Tarefa> Tarefas { get { return _tarefas; } }
 
-        public int Colaborador { get; set; }
+        public ColaboradorInfo Responsavel { get; private set; }
 
         public void AdicionarTarefa(Tarefa item)
         {
@@ -50,5 +46,21 @@ namespace _2do.Models
             foreach (var t in tarefas) 
                 AdicionarTarefa(t);
         }
+
+        public void AdicionarColaborador(Colaborador colaborador)
+        {
+            Responsavel = new ColaboradorInfo {Id = colaborador.Id, Nome = colaborador.Nome};
+        }
     }
+
+    public class ProjetoValidator : AbstractValidator<Projeto>
+    {
+        public ProjetoValidator()
+        {
+            RuleFor(p => p.DataInicio).NotNull().GreaterThanOrEqualTo(DateTime.Today);
+            RuleFor(p => p.Tarefas).SetCollectionValidator(new TarefaValidator());
+        }
+    }
+
+   
 }

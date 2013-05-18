@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentValidation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using _2do.Models;
 
@@ -8,6 +9,8 @@ namespace _2do.Tests
     [TestClass]
     public class ProjetoTest
     {
+        ProjetoValidator _validator = new ProjetoValidator();
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentException),AllowDerivedTypes = true)]
         public void NaoConsigoCriarProjetoComDataInicioAnteriorADataAtual()
@@ -15,9 +18,10 @@ namespace _2do.Tests
             var projeto = ProjetoUtil.NovoProjetoComTarefas();
 
             projeto.DataInicio = DateTime.Now.AddYears(-1);
-
+            
             Assert.IsNotNull(projeto);
             Assert.IsNotNull(projeto.DataInicio);
+            _validator.ValidateAndThrow(projeto);
         }
     }
 
@@ -26,11 +30,7 @@ namespace _2do.Tests
         public static Projeto NovoProjetoComTarefas()
         {
 
-            var tarefas = new List<Tarefa>
-                {
-                    new Tarefa {Descricao = "Tarefa Teste1"},
-                    new Tarefa() {Descricao = "Tarefa Teste2"}
-                };
+            var tarefas = TarefaUtil.ListaNovasTarefas(2);
 
             var projeto = new Projeto { Nome = "Projeto Teste" };
             projeto.AdicionarTarefa(tarefas);
