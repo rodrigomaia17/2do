@@ -71,13 +71,13 @@ namespace _2do.App_Start
 
              
 #if DEBUG
-            IRepositoryFactory factory = new LocalRepositoryFactory();
+            kernel.Bind<IRepositoryFactory>().To<LocalRepositoryFactory>().InSingletonScope();
 #else
-            IRepositoryFactory factory = new MongoRepositoryFactory();
+            kernel.Bind<IRepositoryFactory>().To<MongoRepositoryFactory>().InSingletonScope();
 #endif
 
-            kernel.Bind<IColaboradorRepository>().ToConstant(factory.getColaboradorRepository()).InSingletonScope();
-            kernel.Bind<IProjetoRepository>().ToConstant(factory.getProjetoRepository()).InSingletonScope();
+            
+           
 
 
         }        

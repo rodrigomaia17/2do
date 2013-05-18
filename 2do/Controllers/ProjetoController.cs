@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using MongoDB.Bson;
-using _2do.Data;
+using _2do.Data.Factory;
 using _2do.Data.Interfaces;
 using _2do.Models;
 
@@ -11,9 +10,9 @@ namespace _2do.Controllers
     {
         private readonly IProjetoRepository _repository;
 
-        public ProjetoController(IProjetoRepository repository)
+        public ProjetoController(IRepositoryFactory repository)
         {
-            _repository = repository;
+            _repository = repository.getProjetoRepository();
         }
 
         //
