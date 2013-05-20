@@ -11,10 +11,10 @@
         @RenderSection("head", required: false)
         @Html.Partial("_html5shiv")
         @* favicons and touch icons go here *@
-        <script type="text/javascript"  src="~/Scripts/jquery-1.9.1.js" ></script>
+        <!--<script type="text/javascript"  src="~/Scripts/jquery-1.9.1.js" ></script>
         <script type="text/javascript"  src="~/Scripts/bootstrap.js" ></script>
         <script type="text/javascript"  src="~/Scripts/bootstrap-dropdown.js" ></script>
-        <script type="text/javascript"  src="~/Scripts/bootstrap-datepicker.js" ></script>
+        <script type="text/javascript"  src="~/Scripts/bootstrap-datepicker.js" ></script> -->
 
     </head>
     <body>
@@ -44,8 +44,13 @@
                 <p>&copy; Company @System.DateTime.Now.ToString("yyyy")</p>
             </footer> 
         </div>
-         @Scripts.Render("~/js")
-         @RenderSection("Scripts", required: false)
+         @Scripts.Render(
+            "~/bundles/jquery",
+            "~/bundles/jqueryval",
+            " ~/bundles/Bootstrap"
+            )
+    
+        @RenderSection("Scripts", required: false)
     </body>
 </html>
 

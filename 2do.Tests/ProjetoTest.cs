@@ -12,7 +12,7 @@ namespace _2do.Tests
         ProjetoValidator _validator = new ProjetoValidator();
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException),AllowDerivedTypes = true)]
+        [ExpectedException(typeof(Exception),AllowDerivedTypes = true)]
         public void NaoConsigoCriarProjetoComDataInicioAnteriorADataAtual()
         {
             var projeto = ProjetoUtil.NovoProjetoComTarefas();

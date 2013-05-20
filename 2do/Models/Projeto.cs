@@ -9,7 +9,7 @@ namespace _2do.Models
 {
     public class Projeto : AbstractModel, IPossuiGuidId
     {
-        private DateTime? _dataInicio;
+        
         [BsonElement("Tarefas")]
         private IList<Tarefa> _tarefas;
 
@@ -17,16 +17,7 @@ namespace _2do.Models
         public string Nome { get; set; }
         public DateTime DataEntrega { get; set; }
 
-        public DateTime? DataInicio
-        {
-            get { return _dataInicio; }
-            set
-            {
-                if (value < DateTime.Now)
-                    throw new ArgumentException("Data Inicio nao pode ser menor que data Atual", "DataInicio");
-                _dataInicio = value;
-            }
-        }
+        public DateTime DataInicio { get; set; }
 
         public IEnumerable<Tarefa> Tarefas { get { return _tarefas; } }
 

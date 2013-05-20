@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,10 +13,10 @@ namespace _2do.ViewModels
     {
         [Required, DataType(DataType.Date)]
         public string Nome { get; set; }
-        [Required, DataType(DataType.Text)]
-        public DateTime DataEntrega { get; set; }
-        [Required, DataType(DataType.Text)]
-        public DateTime DataInicio { get; set; }
+        [Required, DataType(DataType.Date)]
+        public string DataEntrega { get; set; }
+        [Required, DataType(DataType.Date)]
+        public string DataInicio { get; set; }
         [Display(Name = "Responsavel")]
         public Guid ResponsavelId { get; set; }
 
@@ -27,9 +28,10 @@ namespace _2do.ViewModels
         }
         public ProjetoFormViewModel(Projeto p,IEnumerable<Colaborador> colaboradores )
         {
+            var culture = new CultureInfo("pt-BR");
             Nome = p.Nome;
-            DataEntrega = p.DataEntrega;
-            DataInicio = p.DataInicio ?? DateTime.Today;
+            DataEntrega = (p.DataEntrega == default(DateTime) ? DateTime.Today : p.DataEntrega).ToString("d",culture);
+            DataInicio = (p.DataInicio == default(DateTime) ? DateTime.Today : p.DataInicio).ToString("d",culture);
             ResponsavelId = p.Responsavel != null ? p.Responsavel.Id : Guid.Empty;
 
              ResponsaveisList = new SelectList(colaboradores, "Id", "Nome");
@@ -37,9 +39,10 @@ namespace _2do.ViewModels
 
         public void ToProjeto(Projeto p)
         {
+            var culture = new CultureInfo("pt-BR");
             p.Nome = Nome;
-            p.DataInicio = DataInicio;
-            p.DataEntrega = DataEntrega;
+            p.DataInicio = DateTime.Parse(DataInicio, culture);
+            p.DataEntrega = DateTime.Parse(DataEntrega, culture);
         }
     }
 
@@ -55,8 +58,8 @@ namespace _2do.ViewModels
         {
             Id = projeto.Id;
             Nome = projeto.Nome;
-            DataEntrega = projeto.DataEntrega.ToShortDateString();
-            DataInicio = projeto.DataInicio.HasValue ? projeto.DataInicio.Value.ToShortDateString() : "";
+            DataEntrega = projeto.DataEntrega == default(DateTime) ? DateTime.Today.ToShortDateString() : projeto.DataEntrega.ToShortDateString();
+            DataInicio = projeto.DataInicio ==  default(DateTime) ? DateTime.Today.ToShortDateString() : projeto.DataInicio.ToShortDateString();
             Responsavel = projeto.Responsavel.Nome;
 
         }

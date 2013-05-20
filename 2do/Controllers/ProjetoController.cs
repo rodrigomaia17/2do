@@ -7,6 +7,7 @@ using _2do.Data.Factory;
 using _2do.Data.Interfaces;
 using _2do.Models;
 using _2do.ViewModels;
+using FluentValidation;
 
 namespace _2do.Controllers
 {
@@ -14,6 +15,8 @@ namespace _2do.Controllers
     {
         private readonly IProjetoRepository _projetoRepository;
         private readonly IColaboradorRepository _colaboradorRepository;
+
+        private readonly ProjetoValidator _validator = new ProjetoValidator();
 
 
         public ProjetoController(IRepositoryFactory repository)
@@ -56,21 +59,18 @@ namespace _2do.Controllers
         [HttpPost]
         public ActionResult Create(ProjetoFormViewModel projetoVM)
         {
-            try
-            {
+            
                 var projeto = new Projeto();
                 projetoVM.ToProjeto(projeto);
 
                 projeto.AdicionarColaborador(_colaboradorRepository.GetById(projetoVM.ResponsavelId));
 
+                _validator.ValidateAndThrow(projeto);
+
                 _projetoRepository.Insert(projeto);
 
                 return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+           
         }
 
         //
@@ -86,18 +86,21 @@ namespace _2do.Controllers
         // POST: /Projeto/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, Projeto projeto)
+        public ActionResult Edit(Guid id, ProjetoFormViewModel projeto)
         {
-            try
-            {
-                // TODO: Add update logic here
+           
+                var projetoSalvar = new Projeto {Id = id};
+                projeto.ToProjeto(projetoSalvar);
+
+                projetoSalvar.AdicionarColaborador(_colaboradorRepository.GetById(projeto.ResponsavelId));
+
+                _validator.ValidateAndThrow(projetoSalvar);
+
+
+                _projetoRepository.Edit(projetoSalvar);
 
                 return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+           
         }
 
         //
@@ -114,16 +117,11 @@ namespace _2do.Controllers
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
-            try
-            {
+           
                 // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+           
         }
     }
 
