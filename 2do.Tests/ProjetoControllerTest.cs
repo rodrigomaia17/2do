@@ -9,6 +9,7 @@ using _2do.Controllers;
 using _2do.Data.Factory;
 using _2do.Data.Interfaces;
 using _2do.Models;
+using _2do.ViewModels;
 
 
 namespace _2do.Tests
@@ -47,7 +48,7 @@ namespace _2do.Tests
 
             result.AssertViewRendered().ViewName.Equals("Index");
             _repo.Verify(r => r.GetAll());
-            result.AssertViewRendered().WithViewData<IEnumerable<Projeto>>();
+            result.AssertViewRendered().WithViewData<IEnumerable<ProjetoListViewModel>>();
         }
     }
 }

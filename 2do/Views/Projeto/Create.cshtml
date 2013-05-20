@@ -1,0 +1,84 @@
+﻿@using System.Collections
+@using System.Reflection
+
+
+@using BootstrapSupport
+@using _2do.Controllers
+@using _2do.Models
+
+
+@helper CriaEditor(PropertyInfo property)
+{
+   
+
+
+    using (Html.ControlGroupFor(property.Name))
+    {
+ @Html.Label(property.Name.ToSeparatedWords(), new { @class = "control-label" })
+
+    <div class="controls">
+        @if (property.Name == "Responsavel")
+        {
+            @Html.DropDownListFor(x => property, (SelectList)ViewBag.colaboradores)
+        }
+        else
+        {
+            @Html.Editor(property.Name, new { @class = "input-xlarge" })
+        }
+        @Html.ValidationMessage(property.Name, null, new { @class = "help-inline" })
+    </div>
+    }
+}
+
+@model _2do.ViewModels.ProjetoFormViewModel
+@using (Html.BeginForm())
+{
+ @Html.ValidationSummary(true)
+    
+    <fieldset class="form-horizontal">
+        <legend>Projeto <small>Details</small></legend>
+        
+         @using (Html.ControlGroupFor(Model => Model.Nome))
+         {
+          @Html.LabelFor(Model => Model.Nome, new { @class = "control-label" })
+          <div class="controls">
+                @Html.TextBoxFor(Model => Model.Nome, new { @class = "input-xlarge" })
+                @Html.ValidationMessageFor(Model => Model.Nome, null, new { @class = "help-inline" })
+         </div>
+         }
+        
+        @using (Html.ControlGroupFor(Model => Model.DataInicio))
+         {
+          @Html.LabelFor(Model => Model.DataInicio, new { @class = "control-label" })
+          <div class="controls">
+                @Html.TextBoxFor(Model => Model.DataInicio, new { @class = "input-xlarge datepicker",  })
+                @Html.ValidationMessageFor(Model => Model.DataInicio, null, new { @class = "help-inline" })
+         </div>
+         }
+        @using (Html.ControlGroupFor(Model => Model.DataEntrega))
+         {
+          @Html.LabelFor(Model => Model.DataEntrega, new { @class = "control-label" })
+          <div class="controls">
+                @Html.EditorFor(m => m.DataEntrega, new { @class = "input-xlarge" })
+                @Html.ValidationMessageFor(Model => Model.DataEntrega, null, new { @class = "help-inline" })
+         </div>
+         }
+        
+         @using (Html.ControlGroupFor(m => m.ResponsavelId))
+         {
+          @Html.LabelFor(m => m.ResponsavelId, new { @class = "control-label" })
+          <div class="controls">
+                @Html.DropDownListFor(m => m.ResponsavelId, Model.ResponsaveisList, new { @class = "input-xlarge" })
+                @Html.ValidationMessageFor(m => m.ResponsavelId, null, new { @class = "help-inline" })
+         </div>
+         }
+
+    <div class="form-actions">
+            <button type="submit" value="Create" class="btn btn-primary">Save changes</button>
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn " })
+        </div>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

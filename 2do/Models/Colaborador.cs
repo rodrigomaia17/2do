@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using _2do.Data.Interfaces;
 
 namespace _2do.Models
@@ -15,5 +16,17 @@ namespace _2do.Models
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
+        public override string ToString()
+        {
+            return Nome;
+        }
+    }
+
+    public static class ColaboradorExtensions
+    {
+        public static IQueryable<ColaboradorInfo> ToListColaboradorInfo(this IQueryable<Colaborador> lista)
+        {
+            return from c in lista select new ColaboradorInfo {Id = c.Id, Nome = c.Nome};
+        } 
     }
 }

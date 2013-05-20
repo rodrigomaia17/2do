@@ -1,0 +1,73 @@
+﻿
+@model IEnumerable<_2do.ViewModels.ProjetoListViewModel> 
+<h4>Projetos <small>Listagem</small></h4>
+<table class="table table-striped">
+    <caption></caption>
+    <thead>
+        <tr>
+
+            <th>Nome    
+            </th>
+            <th>Data de Inicio
+            </th>
+            <th>Data de Entrega
+            </th>
+            <th>Responsavel
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    @foreach (var model in Model)
+    {
+
+        <tr>
+
+            <td>
+                @Html.DisplayFor(x => model.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(x => model.DataInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(x => model.DataEntrega)
+            </td>
+            <td>
+                @Html.DisplayFor(x => model.Responsavel)
+            </td>
+
+
+            <td>
+                
+                    
+                    <div class="btn-group" >
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Ações
+                       
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        
+                            @{
+                                <li>@Html.ActionLink("Edit", "Edit", new { id = model.Id })</li>
+
+                                <li>@Html.ActionLink("Details", "Details", model.Id)</li>
+
+                                <li class="divider"></li>
+
+                                <li>@Html.ActionLink("Delete", "Delete", model.Id)</li>
+
+                            }
+                        </ul>
+                    </div>
+                
+
+            </td>
+        </tr>
+            
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Criar Novo Projeto", "Create", null, new {@class = "btn"})
+</p>
+

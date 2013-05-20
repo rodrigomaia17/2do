@@ -12,6 +12,7 @@ namespace _2do.Data.Local
 
         public void Insert(TEntity entity)
         {
+            entity.Id = Guid.NewGuid();
             _colecao.Add(entity.Id, entity);
         }
 

@@ -1,18 +1,25 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Globalization;
 using System.Web.Mvc;
 using _2do.Data.Factory;
 using _2do.Data.Interfaces;
 using _2do.Models;
+using _2do.ViewModels;
 
 namespace _2do.Controllers
 {
     public class ProjetoController : Controller
     {
-        private readonly IProjetoRepository _repository;
+        private readonly IProjetoRepository _projetoRepository;
+        private readonly IColaboradorRepository _colaboradorRepository;
+
 
         public ProjetoController(IRepositoryFactory repository)
         {
-            _repository = repository.getProjetoRepository();
+            _projetoRepository = repository.getProjetoRepository();
+            _colaboradorRepository = repository.getColaboradorRepository();
         }
 
         //
@@ -20,7 +27,7 @@ namespace _2do.Controllers
 
         public ActionResult Index()
         {
-            var projetos = _repository.GetAll();
+            var projetos = from p in  _projetoRepository.GetAll() select new ProjetoListViewModel(p);
             return View(projetos);
         }
 
@@ -29,7 +36,7 @@ namespace _2do.Controllers
 
         public ActionResult Details(Guid id)
         {
-            var projeto = _repository.GetById(id);
+            var projeto = _projetoRepository.GetById(id);
             return View(projeto);
         }
 
@@ -38,18 +45,25 @@ namespace _2do.Controllers
 
         public ActionResult Create()
         {
-            return View(new Projeto());
+            
+            
+            return View(new ProjetoFormViewModel(new Projeto(), _colaboradorRepository.GetAll()));
         }
 
         //
         // POST: /Projeto/Create
 
         [HttpPost]
-        public ActionResult Create(Projeto projeto)
+        public ActionResult Create(ProjetoFormViewModel projetoVM)
         {
             try
             {
-                _repository.Insert(projeto);
+                var projeto = new Projeto();
+                projetoVM.ToProjeto(projeto);
+
+                projeto.AdicionarColaborador(_colaboradorRepository.GetById(projetoVM.ResponsavelId));
+
+                _projetoRepository.Insert(projeto);
 
                 return RedirectToAction("Index");
             }
@@ -64,8 +78,8 @@ namespace _2do.Controllers
 
         public ActionResult Edit(Guid id)
         {
-            var projeto = _repository.GetById(id);
-            return View("Create",projeto);
+            var projeto = _projetoRepository.GetById(id);
+            return View("Create",new ProjetoFormViewModel(projeto,_colaboradorRepository.GetAll()));
         }
 
         //
@@ -112,4 +126,6 @@ namespace _2do.Controllers
             }
         }
     }
+
+   
 }
