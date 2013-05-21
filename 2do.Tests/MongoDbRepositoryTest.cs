@@ -13,7 +13,7 @@ namespace _2do.Tests
 {
     
     [TestClass]
-    public class MongoDbRepositoryTest
+    public class MongoDbRepositoryTest //TESTE DE INTEGRAÇÃO - Isso nao é um teste unitário e pode ser removido do projeto após entendimento do driver
     {
         private static IList<Guid> _listaProjetosExclusao;
         private static IList<Guid> _listaColaboradoresExclusao;
