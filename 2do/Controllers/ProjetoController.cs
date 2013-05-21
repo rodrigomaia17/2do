@@ -148,25 +148,17 @@ namespace _2do.Controllers
         //
         // GET: /Projeto/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
-            return View();
+            _projetoRepository.Delete(id);
+
+            return RedirectToAction("Index");
         }
 
         
 
-        //
-        // POST: /Projeto/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-           
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-           
-        }
+  
+  
     }
 
 

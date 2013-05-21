@@ -72,11 +72,12 @@ namespace _2do.Controllers
         // POST: /Colaborador/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, Colaborador colaborador)
+        public ActionResult Edit(Guid id, Colaborador colaborador)
         {
             try
             {
-                // TODO: Add update logic here
+                colaborador.Id = id;
+                _repository.Edit(colaborador);
 
                 return RedirectToAction("Index");
             }
@@ -89,27 +90,14 @@ namespace _2do.Controllers
         //
         // GET: /Colaborador/Delete/5
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
-            return View();
+            _repository.Delete(id);
+
+            return RedirectToAction("Index");
         }
 
-        //
-        // POST: /Colaborador/Delete/5
 
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

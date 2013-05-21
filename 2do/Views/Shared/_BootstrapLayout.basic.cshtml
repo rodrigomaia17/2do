@@ -1,5 +1,6 @@
 @using System.Web.Optimization
 @using BootstrapSupport
+@using Microsoft.Web.Mvc.Controls
 @using NavigationRoutes
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +30,8 @@
                         <span class="icon-bar"></span>
                     </a>
                     <a class="brand" href="#" title="change in _bootstrapLayout.basic.cshtml">2Do</a>
+                    @Html.ActionLink("Gerenciar Projetos", "Index","Projeto",null,new {@class = "brand"})
+                    @Html.ActionLink("Gerenciar Colaboradores", "Index","Colaborador",null,new {@class = "brand"})
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             @Html.Navigation()
