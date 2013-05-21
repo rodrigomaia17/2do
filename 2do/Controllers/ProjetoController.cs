@@ -34,15 +34,7 @@ namespace _2do.Controllers
             return View(projetos);
         }
 
-        //
-        // GET: /Projeto/Details/5
-
-        public ActionResult Details(Guid id)
-        {
-            var projeto = _projetoRepository.GetById(id);
-            return View(projeto);
-        }
-
+      
         //
         // GET: /Projeto/Create
 
@@ -71,6 +63,45 @@ namespace _2do.Controllers
 
                 return RedirectToAction("Index");
            
+        }
+        //
+        // GET: /Projeto/CreateTarefa
+
+        public ActionResult CreateTarefa(Guid idProjeto)
+        {
+            ViewBag.IdProjeto = idProjeto;
+            return PartialView("CreateTarefa", new TarefaFormViewModel(new Tarefa(),idProjeto, _colaboradorRepository.GetAll()));
+        }
+
+        //
+        // POST: /Projeto/CreateTarefa
+        [HttpPost]
+        public void CreateTarefa(TarefaFormViewModel tarefaVM)
+        {
+
+            var projeto = _projetoRepository.GetById(tarefaVM.Id);
+
+            var tarefa = new Tarefa();
+            tarefaVM.ToTarefa(tarefa);
+
+            tarefa.AdicionarColaborador(_colaboradorRepository.GetById(tarefaVM.ResponsavelId));
+            tarefa.CreatedAt = DateTime.Today;
+
+            projeto.Tarefas.Add(tarefa);
+
+            _projetoRepository.Edit(projeto);
+
+        }
+
+        
+        
+        public void ConcluirTarefa(Guid id, Guid projetoId)
+        {
+            var projeto = _projetoRepository.GetById(projetoId);
+
+            projeto.Tarefas[id].DataFinalizacao = DateTime.Today;
+
+            _projetoRepository.Edit(projeto);
         }
 
         //
@@ -104,12 +135,25 @@ namespace _2do.Controllers
         }
 
         //
+        //GET: /Projeto/Details/5
+        public ActionResult Details(Guid id)
+        {
+            var projeto = _projetoRepository.GetById(id);
+
+            var vm = new ProjetoDetailsViewModel(projeto);
+
+            return View(vm);
+        }
+
+        //
         // GET: /Projeto/Delete/5
 
         public ActionResult Delete(int id)
         {
             return View();
         }
+
+        
 
         //
         // POST: /Projeto/Delete/5
@@ -124,6 +168,7 @@ namespace _2do.Controllers
            
         }
     }
+
 
    
 }

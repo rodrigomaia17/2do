@@ -1,0 +1,78 @@
+﻿@using GridMvc.Html
+@model _2do.ViewModels.ProjetoDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    
+}
+
+<h2>@Model.Nome</h2>
+
+<fieldset>
+    <legend>Data de Entrega: @Model.DataEntrega</legend>
+
+    <h4>Tarefas</h4>
+
+    @Html.Grid(Model.Tarefas).AutoGenerateColumns().Columns( columns => 
+     columns.Add(m => m.Concluida).Titled("Concluir Tarefa").Encoded(false).Sanitized(false).RenderValueAs(m => Html.Raw("<label class=\"checkbox\"><input type=\"checkbox\"> Concluida</label> "))
+    )
+
+    <button class=" btn btn-primary" onclick="AdicionarTarefa()" type="button">Adicionar Nova Tarefa </button>
+
+    <div hidden id="dialog" class="ui-helper-hidden" style="overflow: hidden; display: none;" title="Criar Tarefa" />
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id=Model.PrimaryKey */ },new { @class = "btn"}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
+<!-- columns.Add(m => m.Descricao).Titled("Descrição");
+            columns.Add(m => m.Responsavel).Titled("Responsável").RenderValueAs(m => m.Responsavel.Nome); -->
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function() {
+            $('#dialog').dialog({
+                autoOpen: false,
+                show: {
+                    effect: "blind",
+                    duration: 500
+                },
+                height: 400,
+                width: 700,
+                modal: true,
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                }
+            });
+            $('.grid-row').has(':checkbox:checked')
+                .css("text-decoration", "line-through");
+            $('.grid-cell[data-name="DataConclusao"]')
+                .filter(function () { return this.innerText != ""; }).parent().css("text-decoration", "line-through");
+            $('input,checkbox').click(function() {
+                var idTarefa = $(this).parents('.grid-row').children('.grid-cell[data-name="Id"]').text();
+                    $.ajax({
+                        url: '@Url.Action("ConcluirTarefa", "Projeto")' + '/' + idTarefa,
+                        data: { projetoId: '@Model.Id' },
+                        complete : function(){
+                            $('.grid-row').has(':checkbox:checked')
+                            .css("text-decoration","line-through");
+                        }
+
+                    });
+                
+            });
+        });
+
+        function AdicionarTarefa() {
+            $('#dialog').load('@Url.Action("CreateTarefa", "Projeto", new {idProjeto = Model.Id})',
+                 function () {
+                     $('#dialog').dialog('open');
+                 });  
+        }
+
+    </script>
+    }

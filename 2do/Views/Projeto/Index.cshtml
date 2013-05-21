@@ -50,11 +50,11 @@
                             @{
                                 <li>@Html.ActionLink("Edit", "Edit", new { id = model.Id })</li>
 
-                                <li>@Html.ActionLink("Details", "Details", model.Id)</li>
+                                <li>@Html.ActionLink("Details", "Details", new { id = model.Id })</li>
 
                                 <li class="divider"></li>
 
-                                <li>@Html.ActionLink("Delete", "Delete", model.Id)</li>
+                                <li>@Html.ActionLink("Delete", "Delete", new { id = model.Id })</li>
 
                             }
                         </ul>

@@ -1,0 +1,52 @@
+﻿
+
+@using BootstrapSupport
+
+
+
+@model _2do.ViewModels.TarefaFormViewModel
+@using (Ajax.BeginForm("CreateTarefa","Projeto",new AjaxOptions{OnSuccess = "ReloadPage"}))
+{
+ @Html.ValidationSummary(true)
+    
+    <fieldset class="form-horizontal">
+        <legend>Tarefa <small>Nova</small></legend>
+        
+        @Html.HiddenFor(m => m.Id)
+
+        @using (Html.ControlGroupFor(Model => Model.Descricao))
+         {
+          @Html.LabelFor(Model => Model.Descricao, new { @class = "control-label" })
+          <div class="controls">
+                @Html.TextBoxFor(Model => Model.Descricao, new { @class = "input-xlarge" })
+                @Html.ValidationMessageFor(Model => Model.Descricao, null, new { @class = "help-inline" })
+         </div>
+         }
+        
+       
+         @using (Html.ControlGroupFor(m => m.ResponsavelId))
+         {
+          @Html.LabelFor(m => m.ResponsavelId, new { @class = "control-label" })
+          <div class="controls">
+                @Html.DropDownListFor(m => m.ResponsavelId, Model.ResponsaveisList, new { @class = "input-xlarge" })
+                @Html.ValidationMessageFor(m => m.ResponsavelId, null, new { @class = "help-inline" })
+         </div>
+         }
+
+    <div class="form-actions">
+            <button type="submit" value="Create" class="btn btn-primary">Salvar Tarefa</button>
+        </div>
+    </fieldset>
+}
+
+
+@section Scripts {
+<script type="text/javascript">
+    $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy'
+    }); //Initialise any date pickers
+    
+    
+
+</script>
+}

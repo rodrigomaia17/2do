@@ -9,9 +9,7 @@ namespace _2do.Models
 {
     public class Projeto : AbstractModel, IPossuiGuidId
     {
-        
-        [BsonElement("Tarefas")]
-        private IList<Tarefa> _tarefas;
+
 
         public Guid Id { get; set; }
         public string Nome { get; set; }
@@ -19,27 +17,22 @@ namespace _2do.Models
 
         public DateTime DataInicio { get; set; }
 
-        public IEnumerable<Tarefa> Tarefas { get { return _tarefas; } }
+        public IDictionary<Guid, Tarefa> Tarefas { get; set; }
 
 
         public ColaboradorInfo Responsavel { get; private set; }
 
-        public void AdicionarTarefa(Tarefa item)
-        {
-            if (_tarefas == null)
-                _tarefas = new List<Tarefa>();
-            _tarefas.Add(item);
-        }
 
-        public void AdicionarTarefa(IEnumerable<Tarefa> tarefas)
-        {
-            foreach (var t in tarefas)
-                AdicionarTarefa(t);
-        }
 
         public void AdicionarColaborador(Colaborador colaborador)
         {
             Responsavel = new ColaboradorInfo { Id = colaborador.Id, Nome = colaborador.Nome };
+        }
+
+        public Projeto()
+        {
+            Tarefas = new Dictionary<Guid, Tarefa>();
+
         }
     }
 
@@ -48,7 +41,16 @@ namespace _2do.Models
         public ProjetoValidator()
         {
             RuleFor(p => p.DataInicio).NotNull().GreaterThanOrEqualTo(DateTime.Today);
-            RuleFor(p => p.Tarefas).SetCollectionValidator(new TarefaValidator());
+        }
+    }
+
+    public static class ProjetoExtension
+    {
+        public static void Add(this IDictionary<Guid, Tarefa> dic, Tarefa tarefa)
+        {
+            if (tarefa.Id == Guid.Empty)
+                tarefa.Id = Guid.NewGuid();
+            dic.Add(tarefa.Id,tarefa);
         }
     }
 

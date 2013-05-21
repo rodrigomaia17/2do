@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace _2do
 {
@@ -20,7 +19,8 @@ namespace _2do
 
             bundles.Add(new ScriptBundle("~/bundles/Bootstrap").Include(
                 "~/Scripts/bootstrap.js",
-                "~/Scripts/bootstrap-datepicker.js"
+                "~/Scripts/bootstrap-datepicker.js",
+                "~/Scripts/gridmvc.js"
                 ));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
@@ -34,7 +34,8 @@ namespace _2do
                 "~/Content/bootstrap-datepicker.css",
                 "~/Content/body.css",
                 "~/Content/bootstrap-responsive.css",
-                "~/Content/bootstrap-mvc-validation.css"
+                "~/Content/bootstrap-mvc-validation.css",
+                "~/Content/Gridmvc.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

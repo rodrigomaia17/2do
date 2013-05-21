@@ -33,7 +33,12 @@ namespace _2do.Tests
             var tarefas = TarefaUtil.ListaNovasTarefas(2);
 
             var projeto = new Projeto { Nome = "Projeto Teste" };
-            projeto.AdicionarTarefa(tarefas);
+
+            foreach (var tarefa in tarefas)
+            {
+                projeto.Tarefas.Add(tarefa);
+            }
+            
 
             return projeto;
 

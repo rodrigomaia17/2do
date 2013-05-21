@@ -8,8 +8,9 @@ namespace _2do.Models
 {
     public class Tarefa : AbstractModel
     {
+        public Guid Id { get; set; }
         public string Descricao { get; set; }
-        public DateTime? DataFinalizacao { get; private set; }
+        public DateTime? DataFinalizacao { get; set; }
         public ColaboradorInfo Responsavel { get; private set; }
 
         public void AdicionarColaborador(Colaborador colaborador)
