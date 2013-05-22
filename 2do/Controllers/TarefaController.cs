@@ -18,11 +18,11 @@ namespace _2do.Controllers
         private readonly IProjetoRepository _projetoRepository;
         private readonly IColaboradorRepository _colaboradorRepository;
 
-        Lazy<IHubContext> _tarefaHub = new Lazy<IHubContext>(
+        readonly Lazy<IHubContext> _tarefaHub = new Lazy<IHubContext>(
            () => GlobalHost.ConnectionManager.GetHubContext<TarefaHub>()
        );
 
-        Lazy<IHubContext> _notificacaoHub = new Lazy<IHubContext>(
+        readonly Lazy<IHubContext> _notificacaoHub = new Lazy<IHubContext>(
            () => GlobalHost.ConnectionManager.GetHubContext<NotificacaoHub>()
        );
        
@@ -65,9 +65,27 @@ namespace _2do.Controllers
             _notificacaoHub.Value.Clients.All.sucesso("","Tarefa Adicionada");
         }
 
-        // PUT api/tarefaapi/5
-        public void Put(int id, [FromBody]string value)
+        [HttpPost]
+        public void UpdateTarefa(Guid id, bool novoValor)
         {
+            
+        }
+
+        // PUT api/tarefaapi/5
+        public void Put(Guid id,[FromUri]Guid idProjeto,[FromUri] bool value)
+        {
+            var projeto = _projetoRepository.GetById(idProjeto); 
+            var tarefa = projeto.Tarefas[id];
+            if (value) 
+                tarefa.ConcluirTarefa();
+            else
+                tarefa.DataFinalizacao = null;
+            
+            _projetoRepository.Edit(projeto);
+
+            _tarefaHub.Value.Clients.All.updateTarefa(tarefa);
+            _notificacaoHub.Value.Clients.All.sucesso("", "Tarefa :\"" + tarefa.Descricao + "\" foi alterada");
+
         }
 
         // DELETE api/tarefaapi/5

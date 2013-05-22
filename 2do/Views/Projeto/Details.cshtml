@@ -18,12 +18,18 @@
             <tr>
                 <th>Id</th>
                 <th>Descricao</th>
+                <th>Responsavel</th>
+                <th>Concluida</th>
             </tr>
         </thead>
         <tbody data-bind="foreach: tarefas">
-            <tr class="grid-row">
+            <tr class="grid-row" data-bind="css: { tachada: concluida }">
                 <td data-bind="text: id"></td>
                 <td data-bind="text: descricao"></td>
+                <td data-bind="text: responsavel"></td>
+                <td>
+                    <input type="checkbox" data-bind="checked: concluida,click: salvarTarefa" />
+                </td>
             </tr>
         </tbody>
     </table>
@@ -43,66 +49,92 @@
             columns.Add(m => m.Responsavel).Titled("Responsável").RenderValueAs(m => m.Responsavel.Nome); -->
 @section Scripts
 {
-  
-    
+
+
     <script type="text/javascript">
 
-        function Tarefa(id, descricao) {
+        function Tarefa(id, descricao, responsavel, concluida) {
             var self = this;
 
             self.id = id;
             self.descricao = ko.observable(descricao);
+            self.responsavel = ko.observable(responsavel);
+            self.concluida = ko.observable(concluida);
 
 
-            self.update = function (descricao) {
-                self.descricao = descricao;
+            self.update = function (concluidaAtualizado) {
+                self.concluida(concluidaAtualizado);
 
             };
 
-        }
-
-        function DetalhesProjetoViewModel() {
-            var self = this;
-
-            self.idProjeto = ko.observable();
-            self.tarefas = ko.observableArray();
-
-            self.addTarefa = function (id, descricao) {
-                self.tarefas.push(new Tarefa(id, descricao));
-            };
-
-            self.remove = function (id) {
-                self.tarefas.remove(function (item) { return item.id === id; });
-            };
-
-            self.update = function (id, descricao, concluida) {
-                var oldItem = ko.utils.arrayFirst(self.tarefas(), function (i) { return i.id === id; });
-                if (oldItem) {
-                    oldItem.update(descricao, concluida);
-                }
-            };
-        }
-
-        $(function () {
-            var viewModel = new DetalhesProjetoViewModel();
-            var hub = $.connection.tarefaHub;
-            ko.applyBindings(viewModel);
-
-            var url = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "Tarefa" })';
-            url += "?idProjeto=" + '@Model.Id';
-            $.get(url, function (items) {
-                $.each(items, function (idx, item) {
-                    viewModel.addTarefa(item.Id, item.Descricao);
+            self.salvarTarefa = (function (novoValor) {
+                var url = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "Tarefa" })';
+                url += "?Id=" + self.id + "&idProjeto=" + '@Model.Id' + "&value=" + self.concluida();
+                $.ajax({
+                    url: url ,
+                    type: 'PUT',
                 });
-            }, "json");
-                
-            hub.client.addTarefa = function (tarefa) {
-                viewModel.addTarefa(tarefa.Id, tarefa.Descricao);
-            };
-                
-            $.connection.hub.start();
 
-            $('#dialog').dialog({
+                return true;
+            });
+
+
+            }
+
+            function DetalhesProjetoViewModel() {
+                var self = this;
+
+                self.idProjeto = ko.observable();
+                self.tarefas = ko.observableArray();
+
+                self.addTarefa = function (id, descricao, responsavel, concluida) {
+                    self.tarefas.push(new Tarefa(id, descricao, responsavel, concluida));
+                };
+
+                self.remove = function (id) {
+                    self.tarefas.remove(function (item) { return item.id === id; });
+                };
+
+                self.update = function (id, concluida) {
+                    var oldItem = ko.utils.arrayFirst(self.tarefas(), function (i) { return i.id === id; });
+                    if (oldItem) {
+                        oldItem.update(concluida);
+                    }
+                };
+
+
+
+            }
+
+            $(function () {
+                var viewModel = new DetalhesProjetoViewModel();
+                var hub = $.connection.tarefaHub;
+                ko.applyBindings(viewModel);
+
+                var url = '@Url.RouteUrl("DefaultApi", new { httproute = "", controller = "Tarefa" })';
+                url += "?idProjeto=" + '@Model.Id';
+                $.get(url, function (items) {
+                    $.each(items, function (idx, item) {
+                        viewModel.addTarefa(item.Id, item.Descricao, item.Responsavel.Nome, (item.DataFinalizacao != null));
+                    });
+
+
+
+                }, "json");
+
+                hub.client.addTarefa = function (tarefa) {
+                    viewModel.addTarefa(tarefa.Id, tarefa.Descricao, tarefa.Responsavel.Nome, (tarefa.DataFinalizacao != null));
+                };
+
+                hub.client.updateTarefa = function(tarefa) {
+                    viewModel.update(tarefa.Id, (tarefa.DataFinalizacao != null));
+                };
+
+                $.connection.hub.start();
+
+
+
+                $('#dialog').dialog({
                     autoOpen: false,
                     show: {
                         effect: "blind",
@@ -115,22 +147,21 @@
                         effect: "explode",
                         duration: 500
                     }
-             });
+                });
+
+
+            });
+
+            function AdicionarTarefa() {
+                $('#dialog').load('@Url.Action("CreateTarefa", "Projeto", new { idProjeto = Model.Id })',
+                function () {
+                    $('#dialog').dialog('open');
+                });
+            }
             
-            
-        });
-        
-        function AdicionarTarefa() {
-            $('#dialog').load('@Url.Action("CreateTarefa", "Projeto", new { idProjeto = Model.Id })',
-                 function () {
-                     $('#dialog').dialog('open');
-                 });
+        function fecharDialog() {
+            $('#dialog').dialog('close');
         }
-
-        function ReloadPage() {
-            location.reload(true);
-        }  
-
 
     </script>
 

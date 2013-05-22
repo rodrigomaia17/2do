@@ -21,7 +21,7 @@ namespace _2do.Models
 
         public void ConcluirTarefa()
         {
-            DataFinalizacao = DateTime.Now;
+            DataFinalizacao = DateTime.Today;
         }
     }
 

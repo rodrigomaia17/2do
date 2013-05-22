@@ -5,7 +5,7 @@
 
 
 @model _2do.ViewModels.TarefaFormViewModel
-@using (Ajax.BeginForm("tarefa","api",new AjaxOptions{HttpMethod = "Post",}))
+@using (Ajax.BeginForm("tarefa", "api", new AjaxOptions { HttpMethod = "Post", OnComplete = "fecharDialog" }))
 {
  @Html.ValidationSummary(true)
     
@@ -40,13 +40,4 @@
 }
 
 
-@section Scripts {
-<script type="text/javascript">
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy'
-    }); //Initialise any date pickers
-    
-    
 
-</script>
-}
