@@ -23,6 +23,17 @@ namespace _2do
                 "~/Scripts/gridmvc.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/toastr").Include(
+                "~/Scripts/toastr.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
+                "~/Scripts/knockout-{version}.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/signalr").Include(
+                "~/Scripts/jquery.signalR-{version}.js"
+                ));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
@@ -35,7 +46,8 @@ namespace _2do
                 "~/Content/body.css",
                 "~/Content/bootstrap-responsive.css",
                 "~/Content/bootstrap-mvc-validation.css",
-                "~/Content/Gridmvc.css"
+                "~/Content/Gridmvc.css",
+                "~/Content/toastr.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

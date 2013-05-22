@@ -8,7 +8,7 @@ namespace _2do.Data.Local
 {
     internal abstract class LocalCrudRepository<TEntity> : ICrudRepository<TEntity> where TEntity : IPossuiGuidId 
     {
-        private readonly Dictionary<Guid, TEntity> _colecao = new Dictionary<Guid, TEntity>();
+        protected static readonly Dictionary<Guid, TEntity> _colecao = new Dictionary<Guid, TEntity>();
 
         public void Insert(TEntity entity)
         {

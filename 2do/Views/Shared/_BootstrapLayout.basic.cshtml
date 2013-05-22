@@ -4,59 +4,82 @@
 @using NavigationRoutes
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>@ViewBag.Title</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="@Styles.Url("~/content/css")" rel="stylesheet"/>
-        <link href="@Styles.Url("~/Content/themes/base/css")" rel="stylesheet"/>
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="@Styles.Url("~/content/css")" rel="stylesheet"/>
+    <link href="@Styles.Url("~/Content/themes/base/css")" rel="stylesheet"/>
 
-        @RenderSection("head", required: false)
-        @Html.Partial("_html5shiv")
-        @* favicons and touch icons go here *@
-        <!--<script type="text/javascript"  src="~/Scripts/jquery-1.9.1.js" ></script>
+    @RenderSection("head", required: false)
+    @Html.Partial("_html5shiv")
+    @* favicons and touch icons go here *@
+    <!--<script type="text/javascript"  src="~/Scripts/jquery-1.9.1.js" ></script>
         <script type="text/javascript"  src="~/Scripts/bootstrap.js" ></script>
         <script type="text/javascript"  src="~/Scripts/bootstrap-dropdown.js" ></script>
         <script type="text/javascript"  src="~/Scripts/bootstrap-datepicker.js" ></script> -->
 
-    </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="#" title="change in _bootstrapLayout.basic.cshtml">2Do</a>
-                    @Html.ActionLink("Gerenciar Projetos", "Index","Projeto",null,new {@class = "brand"})
-                    @Html.ActionLink("Gerenciar Colaboradores", "Index","Colaborador",null,new {@class = "brand"})
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            @Html.Navigation()
-                        </ul>
-                    </div>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="brand" href="#" title="change in _bootstrapLayout.basic.cshtml">2Do</a>
+                @Html.ActionLink("Gerenciar Projetos", "Index", "Projeto", null, new { @class = "brand" })
+                @Html.ActionLink("Gerenciar Colaboradores", "Index", "Colaborador", null, new { @class = "brand" })
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        @Html.Navigation()
+                    </ul>
                 </div>
             </div>
-        </div>        
-        <div class="container">
-            @Html.Partial("_alerts")
-            @Html.Partial("_validationSummary")
-            @RenderBody()   
-            <hr>
-            <footer>
-                <p>&copy; Company @System.DateTime.Now.ToString("yyyy")</p>
-            </footer> 
         </div>
-         @Scripts.Render(
+    </div>
+    <div class="container">
+        @Html.Partial("_alerts")
+        @Html.Partial("_validationSummary")
+        @RenderBody()
+        <hr>
+        <footer>
+            <p>&copy; Company @System.DateTime.Now.ToString("yyyy")</p>
+        </footer>
+    </div>
+    @Scripts.Render(
             "~/bundles/jquery",
             "~/bundles/jqueryval",
             "~/bundles/jqueryui",
-            " ~/bundles/Bootstrap"
+            " ~/bundles/Bootstrap",
+            "~/bundles/signalr",
+            "~/bundles/knockout",
+            "~/bundles/toastr"
             )
-    
-        @RenderSection("Scripts", required: false)
-    </body>
+
+    <script src="~/signalr/hubs" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            var hubNotificacao = $.connection.notificacaoHub;
+
+            hubNotificacao.client.sucesso = function(titulo, msg) {
+                toastr.success(titulo, msg);
+            };
+
+            hubNotificacao.client.erro = function(titulo, msg) {
+                toastr.error(titulo, msg);
+            };
+            
+            $.connection.hub.start();
+
+
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
 </html>
 

@@ -5,14 +5,14 @@
 
 
 @model _2do.ViewModels.TarefaFormViewModel
-@using (Ajax.BeginForm("CreateTarefa","Projeto",new AjaxOptions{OnSuccess = "ReloadPage"}))
+@using (Ajax.BeginForm("tarefa","api",new AjaxOptions{HttpMethod = "Post",}))
 {
  @Html.ValidationSummary(true)
     
     <fieldset class="form-horizontal">
         <legend>Tarefa <small>Nova</small></legend>
         
-        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.IdProjeto)
 
         @using (Html.ControlGroupFor(Model => Model.Descricao))
          {

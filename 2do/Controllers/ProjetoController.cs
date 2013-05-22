@@ -79,7 +79,7 @@ namespace _2do.Controllers
         public void CreateTarefa(TarefaFormViewModel tarefaVM)
         {
 
-            var projeto = _projetoRepository.GetById(tarefaVM.Id);
+            var projeto = _projetoRepository.GetById(tarefaVM.IdProjeto);
 
             var tarefa = new Tarefa();
             tarefaVM.ToTarefa(tarefa);

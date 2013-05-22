@@ -1,3 +1,5 @@
+using System.Web.Http;
+using MvcApplication.App_Start;
 using _2do.Data;
 using _2do.Data.Factory;
 using _2do.Data.Interfaces;
@@ -53,6 +55,9 @@ namespace _2do.App_Start
                 
 
                 RegisterServices(kernel);
+
+                GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
+
                 return kernel;
             }
             catch

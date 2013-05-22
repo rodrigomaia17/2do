@@ -10,7 +10,7 @@ namespace _2do.Data.Local
     {
         public LocalProjetoRepository()
         {
-
+            if (_colecao.Count >0) return;
             var colaborador = new LocalColaboradorRepository().GetAll().First();
 
             var list = new List<Tarefa>
@@ -19,7 +19,7 @@ namespace _2do.Data.Local
                     new Tarefa() {Descricao = "Descricao Teste 2"}
                 };
 
-            var projeto = new Projeto() { Nome = "ProjetoTeste" };
+            var projeto = new Projeto() {Nome = "ProjetoTeste"};
 
 
             foreach (var tarefa in list)

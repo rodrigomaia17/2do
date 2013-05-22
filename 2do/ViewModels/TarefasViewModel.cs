@@ -63,7 +63,7 @@ namespace _2do.ViewModels
     public class TarefaFormViewModel
     {
 
-        public Guid Id { get; set; }
+        public Guid IdProjeto { get; set; }
         
         [Required]
         public string Descricao { get; set; }
@@ -80,7 +80,7 @@ namespace _2do.ViewModels
         public TarefaFormViewModel(Tarefa t,Guid idProjeto, IEnumerable<Colaborador> colaboradores)
         {
             Descricao = t.Descricao;
-            Id = idProjeto;
+            IdProjeto = idProjeto;
             ResponsavelId = t.Responsavel != null ? t.Responsavel.Id : Guid.Empty;
 
             ResponsaveisList = new SelectList(colaboradores, "Id", "Nome");
