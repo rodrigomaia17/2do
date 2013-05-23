@@ -89,8 +89,15 @@ namespace _2do.Controllers
         }
 
         // DELETE api/tarefaapi/5
-        public void Delete(int id)
+        public void Delete(Guid id,[FromUri] Guid idProjeto)
         {
+            var projeto = _projetoRepository.GetById(idProjeto);
+            projeto.Tarefas.Remove(id);
+
+            _projetoRepository.Edit(projeto);
+
+            _tarefaHub.Value.Clients.All.deleteTarefa(id);
+            _notificacaoHub.Value.Clients.All.sucesso("", "Tarefa removida");
         }
     }
 }
