@@ -18,9 +18,13 @@ Processo de Desenvolvimento:
 
 Busquei Aplicar design patterns (Repository, Abstract Factory , MVVM...) a medida que a necessidade fosse surgindo. As Interfaces foram geradas seguindo o padrão Basico do Twitter Bootstrap. O Projeto de Testes Contém testes unitários, e alguns testes de integração com mongoDB para conhecer melhor o funcionamento do banco e do seu Driver para C#. Há também um esboço de uma classe teste dos Controllers, que implementei para servir de uma base caso mais testes de integração sejam desenvolvidos. No Mais, dediquei maior tempo ao back-end da aplicação para garantir que a aplicação nao fuja de boas práticas. 
 
+Efetuei a refatoração da tela de Tarefas utilizando KnockoutJS e WebAPI para responder às requisições. Em breve pretendo adequar toda a App para esse padrão.
+
+
 Outras Ferramentas Utilizadas 
 
-	GridMVC - http://gridmvc.codeplex.com/
+	SignalR - http://signalr.net/
+	KnockoutJs - http://knockoutjs.com/
 
 	
 	
