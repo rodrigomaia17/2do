@@ -1,5 +1,5 @@
 2do
-===
+====
 
 Aplicação base de CRUD de Projetos, Tarefas e Colaboradores.
 Tecnologias:
